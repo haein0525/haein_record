@@ -77,44 +77,7 @@ filterBtns.forEach(btn => {
   });
 });
 
-const works = [
-  {
-    title: '롯데월드 부산 티켓 프로모션',
-    category: '상세페이지 · 웹배너 · 인쇄물',
-    desc: '부산관광공사 협력 프로젝트로, 티켓 구매 유도와 단체 모객을 목표로 상세페이지와 온·오프라인 홍보물을 제작했습니다.',
-    period: '작업 기간 2022.07 - 2025.01',
-    role: '기획 보조, 디자인, 인쇄 발주, 거래처 커뮤니케이션 담당',
-    contribution: 90,
-    image: 'assets/work-lotteworld.png'
-  },
-  {
-    title: '부산 워케이션 프로모션',
-    category: '상세페이지 · 웹배너',
-    desc: '부산 워케이션 프로그램의 객실 예약 유도를 위한 상세페이지와 홍보 배너를 제작했습니다.',
-    period: '작업 기간 2023',
-    role: '상세페이지 디자인 및 웹 배너 제작',
-    contribution: 85,
-    image: 'assets/window-img.png'
-  },
-  {
-    title: '부산 호텔 패키지 프로모션',
-    category: '상세페이지 · 연계 배너',
-    desc: '호텔 이벤트와 패키지 상품을 한눈에 이해할 수 있도록 정보 구조와 비주얼 톤을 정리했습니다.',
-    period: '작업 기간 2023 - 2024',
-    role: '프로모션 비주얼 및 상세페이지 디자인',
-    contribution: 80,
-    image: 'assets/logo-img.png'
-  },
-  {
-    title: '오프라인 홍보물 디자인',
-    category: 'X배너 · POP · 리플렛',
-    desc: '관광/호텔 브랜드의 현장 홍보용 인쇄물을 디자인하고 인쇄 발주까지 진행했습니다.',
-    period: '작업 기간 2022.07 - 2025.01',
-    role: '디자인, 인쇄 사양 검수, 발주 커뮤니케이션',
-    contribution: 90,
-    image: 'assets/work-poster.png'
-  }
-];
+const works = window.WORKS || WORKS || [];
 let currentWork = 0;
 const modal = document.getElementById('workModal');
 const modalImage = document.getElementById('modalImage');
@@ -127,6 +90,7 @@ const modalGaugeBar = document.getElementById('modalGaugeBar');
 const modalRole = document.getElementById('modalRole');
 
 function renderModal(index) {
+  if (!works.length) return;
   currentWork = (index + works.length) % works.length;
   const item = works[currentWork];
   modalImage.src = item.image;
@@ -150,7 +114,17 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 workCards.forEach(card => {
-  card.addEventListener('click', () => openModal(Number(card.dataset.index || 0)));
+  card.addEventListener('click', () => {
+    const index = Number(card.dataset.index || 0);
+    const workId = card.dataset.id || works[index]?.id;
+
+    if (window.innerWidth <= 720 && workId) {
+      window.location.href = `detail.html?id=${workId}`;
+      return;
+    }
+
+    openModal(index);
+  });
 });
 document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', closeModal));
 document.querySelector('.modal-nav.prev')?.addEventListener('click', () => renderModal(currentWork - 1));
