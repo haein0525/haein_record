@@ -53,17 +53,14 @@ const io = new IntersectionObserver(entries => entries.forEach(e => {
 document.querySelectorAll('.fade').forEach(el => io.observe(el));
 
 const wrap = document.getElementById('windowWrap');
-const cardImg = document.getElementById('cardImg');
 document.addEventListener('mousemove', e => {
-  if (innerWidth < 721 || !wrap || !cardImg) return;
+  if (innerWidth < 721 || !wrap) return;
   const x = e.clientX / innerWidth - .5;
   const y = e.clientY / innerHeight - .5;
-  wrap.style.transform = `translate(${x * 10}px,${y * 8}px) rotateY(${x * 5}deg) rotateX(${-y * 4}deg)`;
-  cardImg.style.transform = `rotate(${x * 8 - 2}deg) translate(${x * 18}px,${y * 14 - 4}px)`;
+  wrap.style.transform = `translate(${x * 8}px,${y * 6}px) rotateY(${x * 3}deg) rotateX(${-y * 2}deg)`;
 });
 document.addEventListener('mouseleave', () => {
   if (wrap) wrap.style.transform = '';
-  if (cardImg) cardImg.style.transform = '';
 });
 
 const filterBtns = document.querySelectorAll('.filter-btn');
